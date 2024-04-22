@@ -1,0 +1,4 @@
+#!/bin/sh
+cd `dirname $0`
+../src/onem2m-simulator -n .:../src $*
+# for shared lib, use: opp_run -l ../src/onem2m-simulator -n .:../src $*
