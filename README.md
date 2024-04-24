@@ -57,3 +57,8 @@ Create a new configuration file (.ini) : this file provision values for the simu
 Other information related to the simulaiton process can be added here such as number or runs, random number generators, etc.
 
 For more information about how to configure an OMNeT++ simulation, please refer to OMNeT++ manual.  
+
+### Step 3 Simulate the new scenario :
+
+Select the new *.ini file and run the project.
+
