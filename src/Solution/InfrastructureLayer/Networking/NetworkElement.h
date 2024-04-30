@@ -17,6 +17,8 @@ using namespace std;
 
 class NetworkElement : public cSimpleModule
 {
+  public:
+    ~NetworkElement();
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);

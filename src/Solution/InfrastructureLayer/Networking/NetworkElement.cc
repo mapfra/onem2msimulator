@@ -22,7 +22,7 @@ void NetworkElement::initialize()
         cModule* nic = prevGate->getPreviousGate()->getOwnerModule();
         string ip = nic->par("networkAddress").stdstringValue();
         this->gateIndex->insert(pair<string, int>(ip, i));
-        this->portQueue->insert(pair<int, cPacketQueue*>(i, new cPacketQueue()));
+        this->portQueue->insert(pair<int, cPacketQueue*>(i, new cPacketQueue("PacketQueue")));
         cMessage* aTimer = new cMessage("timer", PacketKind::TIMER);
         aTimer->addPar("gateIndex").setLongValue(i);
         this->portScheduler->insert(pair<int, cMessage*>(i, aTimer));
@@ -80,4 +80,20 @@ void NetworkElement::handleMessage(cMessage *msg)
                 }
             }
     }
+}
+
+NetworkElement::~NetworkElement(){
+    for (auto queue = this->portQueue->begin(); queue != this->portQueue->end(); ++queue){
+        while(queue->second->getLength()>0) {
+            cPacket* pkt = queue->second->pop();
+            cancelAndDelete(pkt);
+        }
+        delete queue->second;
+    }
+    delete portQueue;
+
+    for (auto scheduler = this->portScheduler->begin(); scheduler != this->portScheduler->end(); ++scheduler){
+        cancelAndDelete(scheduler->second);
+    }
+    delete portScheduler;
 }

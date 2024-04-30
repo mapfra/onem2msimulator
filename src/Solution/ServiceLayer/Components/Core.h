@@ -31,6 +31,9 @@ using namespace std;
 
 class Core : public cSimpleModule
 {
+  public:
+    ~Core();
+
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);

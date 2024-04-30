@@ -7,14 +7,22 @@
 
 #include <omnetpp.h>
 
+#include "../../../../lib/constants.hpp"
+#include "../../../../messages/NetworkPacket_m.h"
+
 using namespace omnetpp;
 
 
 class NIC : public cSimpleModule
 {
+  public:
+    ~NIC();
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+
+    cPacketQueue* portQueue;
+    cMessage* portScheduler;
 };
 
 #endif

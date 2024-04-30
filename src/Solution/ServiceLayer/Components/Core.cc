@@ -326,3 +326,22 @@ void Core::handleMessage(cMessage *msg)
         } break;
     }
 }
+
+Core::~Core()
+{
+    delete this->perf;
+    delete this->resourceTree;
+
+    while(this->waiting->getLength()>0) {
+        cPacket* pkt = this->waiting->pop();
+        cancelAndDelete(pkt);
+    }
+    delete this->waiting;
+
+
+    while(this->processing->getLength()>0) {
+        cPacket* pkt = this->processing->pop();
+        cancelAndDelete(pkt);
+    }
+    delete this->processing;
+}

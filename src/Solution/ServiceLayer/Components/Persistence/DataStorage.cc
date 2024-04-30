@@ -24,8 +24,8 @@ void DataStorage::initialize()
     json jsonObj = PerformanceDescriptorDeserializer::parseInput(perfDescriptorString);
     this->perf = PerformanceDescriptorDeserializer::getPerformanceDescriptor(jsonObj);
 
-    this->waiting = new cPacketQueue();
-    this->processing = new cPacketQueue();
+    this->waiting = new cPacketQueue("WaitingPackets");
+    this->processing = new cPacketQueue("PacketsInProcess");
 }
 
 
@@ -143,4 +143,22 @@ void DataStorage::handleMessage(cMessage *msg)
             handleStoragePacket(dbPkt);
         } break;
     }
+}
+
+DataStorage::~DataStorage()
+{
+    delete this->perf;
+
+    while(this->waiting->getLength()>0) {
+        cPacket* pkt = this->waiting->pop();
+        cancelAndDelete(pkt);
+    }
+    delete this->waiting;
+
+
+    while(this->processing->getLength()>0) {
+        cPacket* pkt = this->processing->pop();
+        cancelAndDelete(pkt);
+    }
+    delete this->processing;
 }

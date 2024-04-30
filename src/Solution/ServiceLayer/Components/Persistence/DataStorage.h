@@ -31,6 +31,9 @@ using namespace std;
 
 class DataStorage : public cSimpleModule
 {
+  public:
+    ~DataStorage();
+
   protected:
 
     CPUManager* cpu;
